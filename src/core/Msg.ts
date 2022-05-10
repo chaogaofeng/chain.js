@@ -18,12 +18,19 @@ import {
   MsgVote,
   MsgVoteWeighted,
 } from './gov/msgs';
+import { MarketMsg, MsgSwap, MsgSwapSend } from './market/msgs';
 import {
   MsgGrantAuthorization,
   MsgRevokeAuthorization,
   MsgExecAuthorized,
   MsgAuthMsg,
 } from './authz/msgs';
+import {
+  MsgDelegateFeedConsent,
+  MsgAggregateExchangeRatePrevote,
+  MsgAggregateExchangeRateVote,
+  OracleMsg,
+} from './oracle/msgs';
 import { MsgUnjail, SlashingMsg } from './slashing/msgs';
 import {
   MsgBeginRedelegate,
@@ -78,7 +85,9 @@ export type Msg =
   | DistributionMsg
   | FeeGrantMsg
   | GovMsg
+  | MarketMsg
   | MsgAuthMsg
+  | OracleMsg
   | SlashingMsg
   | StakingMsg
   | WasmMsg
@@ -94,7 +103,9 @@ export namespace Msg {
     | DistributionMsg.Amino
     | FeeGrantMsg.Amino
     | GovMsg.Amino
+    | MarketMsg.Amino
     | MsgAuthMsg.Amino
+    | OracleMsg.Amino
     | SlashingMsg.Amino
     | StakingMsg.Amino
     | WasmMsg.Amino
@@ -106,7 +117,9 @@ export namespace Msg {
     | DistributionMsg.Data
     | FeeGrantMsg.Data
     | GovMsg.Data
+    | MarketMsg.Data
     | MsgAuthMsg.Data
+    | OracleMsg.Data
     | SlashingMsg.Data
     | StakingMsg.Data
     | WasmMsg.Data
@@ -121,7 +134,9 @@ export namespace Msg {
     | DistributionMsg.Proto
     | FeeGrantMsg.Proto
     | GovMsg.Proto
+    | MarketMsg.Proto
     | MsgAuthMsg.Proto
+    | OracleMsg.Proto
     | SlashingMsg.Proto
     | StakingMsg.Proto
     | WasmMsg.Proto
@@ -165,6 +180,12 @@ export namespace Msg {
       case 'gov/MsgVoteWeighted':
         return MsgVoteWeighted.fromAmino(data);
 
+      // market
+      case 'market/MsgSwap':
+        return MsgSwap.fromAmino(data);
+      case 'market/MsgSwapSend':
+        return MsgSwapSend.fromAmino(data);
+
       // msgauth
       case 'msgauth/MsgGrantAuthorization':
         return MsgGrantAuthorization.fromAmino(data);
@@ -172,6 +193,14 @@ export namespace Msg {
         return MsgRevokeAuthorization.fromAmino(data);
       case 'msgauth/MsgExecAuthorized':
         return MsgExecAuthorized.fromAmino(data);
+
+      // oracle
+      case 'oracle/MsgDelegateFeedConsent':
+        return MsgDelegateFeedConsent.fromAmino(data);
+      case 'oracle/MsgAggregateExchangeRatePrevote':
+        return MsgAggregateExchangeRatePrevote.fromAmino(data);
+      case 'oracle/MsgAggregateExchangeRateVote':
+        return MsgAggregateExchangeRateVote.fromAmino(data);
 
       // slashing
       case 'slashing/MsgUnjail':
@@ -198,7 +227,7 @@ export namespace Msg {
         return MsgExecuteContract.fromAmino(data);
       case 'wasm/MsgMigrateContract':
         return MsgMigrateContract.fromAmino(data);
-      case 'wasm/MsgUpdateContractAdmin':
+      case 'wasm/MsgUpdateAdmin':
         return MsgUpdateContractAdmin.fromAmino(data);
       case 'wasm/MsgClearAdmin':
         return MsgClearContractAdmin.fromAmino(data);
@@ -246,6 +275,12 @@ export namespace Msg {
       case '/cosmos.gov.v1beta1.MsgVoteWeighted':
         return MsgVoteWeighted.fromData(data);
 
+      // market
+      case '/terra.market.v1beta1.MsgSwap':
+        return MsgSwap.fromData(data);
+      case '/terra.market.v1beta1.MsgSwapSend':
+        return MsgSwapSend.fromData(data);
+
       // authz
       case '/cosmos.authz.v1beta1.MsgGrant':
         return MsgGrantAuthorization.fromData(data);
@@ -253,6 +288,14 @@ export namespace Msg {
         return MsgRevokeAuthorization.fromData(data);
       case '/cosmos.authz.v1beta1.MsgExec':
         return MsgExecAuthorized.fromData(data);
+
+      // oracle
+      case '/terra.oracle.v1beta1.MsgDelegateFeedConsent':
+        return MsgDelegateFeedConsent.fromData(data);
+      case '/terra.oracle.v1beta1.MsgAggregateExchangeRatePrevote':
+        return MsgAggregateExchangeRatePrevote.fromData(data);
+      case '/terra.oracle.v1beta1.MsgAggregateExchangeRateVote':
+        return MsgAggregateExchangeRateVote.fromData(data);
 
       // slashing
       case '/cosmos.slashing.v1beta1.MsgUnjail':
@@ -368,6 +411,12 @@ export namespace Msg {
       case '/cosmos.gov.v1beta1.MsgVote':
         return MsgVote.unpackAny(proto);
 
+      // market
+      case '/terra.market.v1beta1.MsgSwap':
+        return MsgSwap.unpackAny(proto);
+      case '/terra.market.v1beta1.MsgSwapSend':
+        return MsgSwapSend.unpackAny(proto);
+
       // authz
       case '/cosmos.authz.v1beta1.MsgGrant':
         return MsgGrantAuthorization.unpackAny(proto);
@@ -375,6 +424,14 @@ export namespace Msg {
         return MsgRevokeAuthorization.unpackAny(proto);
       case '/cosmos.authz.v1beta1.MsgExec':
         return MsgExecAuthorized.unpackAny(proto);
+
+      // oracle
+      case '/terra.oracle.v1beta1.MsgDelegateFeedConsent':
+        return MsgDelegateFeedConsent.unpackAny(proto);
+      case '/terra.oracle.v1beta1.MsgAggregateExchangeRatePrevote':
+        return MsgAggregateExchangeRatePrevote.unpackAny(proto);
+      case '/terra.oracle.v1beta1.MsgAggregateExchangeRateVote':
+        return MsgAggregateExchangeRateVote.unpackAny(proto);
 
       // slashing
       case '/cosmos.slashing.v1beta1.MsgUnjail':

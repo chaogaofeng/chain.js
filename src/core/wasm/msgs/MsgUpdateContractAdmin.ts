@@ -33,7 +33,7 @@ export class MsgUpdateContractAdmin extends JSONSerializable<
   public toAmino(): MsgUpdateContractAdmin.Amino {
     const { sender, new_admin, contract } = this;
     return {
-      type: 'wasm/MsgUpdateContractAdmin',
+      type: 'wasm/MsgUpdateAdmin',
       value: {
         sender,
         new_admin,
@@ -94,7 +94,7 @@ export class MsgUpdateContractAdmin extends JSONSerializable<
 
 export namespace MsgUpdateContractAdmin {
   export interface Amino {
-    type: 'wasm/MsgUpdateContractAdmin';
+    type: 'wasm/MsgUpdateAdmin';
     value: {
       sender: AccAddress;
       new_admin: AccAddress;
