@@ -48,7 +48,7 @@ export abstract class Key {
     }
 
     return bech32.encode(
-      'terravaloper',
+      'gncvaloper',
       bech32.toWords(this.publicKey.rawAddress())
     );
   }
