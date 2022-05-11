@@ -200,11 +200,11 @@ export class LegacyAminoMultisigPublicKey extends JSONSerializable<
   }
 
   public address(): string {
-    return bech32.encode('terra', bech32.toWords(this.rawAddress()));
+    return bech32.encode('gnc', bech32.toWords(this.rawAddress()));
   }
 
   public pubkeyAddress(): string {
-    return bech32.encode('terrapub', bech32.toWords(this.encodeAminoPubkey()));
+    return bech32.encode('gncpub', bech32.toWords(this.encodeAminoPubkey()));
   }
 
   public static fromAmino(
