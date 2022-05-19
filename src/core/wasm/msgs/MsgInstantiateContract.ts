@@ -23,6 +23,7 @@ export class MsgInstantiateContract extends JSONSerializable<
     public sender: AccAddress,
     public admin: AccAddress | undefined,
     public code_id: number,
+    public label: string,
     public msg: object | string,
     funds: Coins.Input = {}
   ) {
@@ -34,25 +35,27 @@ export class MsgInstantiateContract extends JSONSerializable<
     data: MsgInstantiateContract.Amino
   ): MsgInstantiateContract {
     const {
-      value: { sender, admin, code_id, msg, funds },
+      value: { sender, admin, code_id, label, msg, funds },
     } = data;
     return new MsgInstantiateContract(
       sender,
       admin,
       Number.parseInt(code_id),
+      label,
       msg,
       Coins.fromAmino(funds)
     );
   }
 
   public toAmino(): MsgInstantiateContract.Amino {
-    const { sender, admin, code_id, msg, funds } = this;
+    const { sender, admin, code_id, label, msg, funds } = this;
     return {
       type: 'wasm/MsgInstantiateContract',
       value: {
         sender,
         admin,
         code_id: code_id.toFixed(),
+        label: label,
         msg: removeNull(msg),
         funds: funds.toAmino(),
       },
@@ -66,16 +69,18 @@ export class MsgInstantiateContract extends JSONSerializable<
       proto.sender,
       proto.admin !== '' ? proto.admin : undefined,
       proto.codeId.toNumber(),
+      proto.label,
       JSON.parse(Buffer.from(proto.msg).toString('utf-8')),
       Coins.fromProto(proto.funds)
     );
   }
 
   public toProto(): MsgInstantiateContract.Proto {
-    const { sender, admin, code_id, msg, funds } = this;
+    const { sender, admin, code_id, label, msg, funds } = this;
     return MsgInstantiateContract_pb.fromPartial({
       admin,
       codeId: Long.fromNumber(code_id),
+      label: label,
       funds: funds.toProto(),
       msg: Buffer.from(JSON.stringify(msg), 'utf-8'),
       sender,
@@ -98,23 +103,25 @@ export class MsgInstantiateContract extends JSONSerializable<
   public static fromData(
     data: MsgInstantiateContract.Data
   ): MsgInstantiateContract {
-    const { sender, admin, code_id, msg, funds } = data;
+    const { sender, admin, code_id, label, msg, funds } = data;
     return new MsgInstantiateContract(
       sender,
       admin !== '' ? admin : undefined,
       Number.parseInt(code_id),
+      label,
       msg,
       Coins.fromData(funds)
     );
   }
 
   public toData(): MsgInstantiateContract.Data {
-    const { sender, admin, code_id, msg, funds } = this;
+    const { sender, admin, code_id, label, msg, funds } = this;
     return {
       '@type': '/cosmwasm.wasm.v1.MsgInstantiateContract',
       sender,
       admin: admin || '',
       code_id: code_id.toFixed(),
+      label: label,
       msg: removeNull(msg),
       funds: funds.toData(),
     };
@@ -128,6 +135,7 @@ export namespace MsgInstantiateContract {
       sender: AccAddress;
       admin?: AccAddress;
       code_id: string;
+      label: string;
       msg: object | string;
       funds: Coins.Amino;
     };
@@ -138,6 +146,7 @@ export namespace MsgInstantiateContract {
     sender: AccAddress;
     admin: AccAddress;
     code_id: string;
+    label: string;
     msg: object | string;
     funds: Coins.Data;
   }
